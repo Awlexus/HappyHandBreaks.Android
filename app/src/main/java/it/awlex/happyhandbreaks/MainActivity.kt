@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var currentFragment: Fragment
+    private var currentFragment: Fragment? = null
     private lateinit var notificationIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,16 +30,21 @@ class MainActivity : AppCompatActivity() {
         else
             Log.d(Constants.ALARM_LOG, "next Alarm in ${alarm - System.currentTimeMillis()}ms")
 
+        // When returning from another Activity, currentfragment won't be null,
+        // meaning if currentfragment is not null adding a Fragment would stack it on top
+        // of currentfragment and the fragments underneath would be unaddressable (Memory Leak?)
+        if (currentFragment == null)
+
         // Add either the MainFragment or the CountDownFragment depending on
         // whether there is an alarm scheduled
-        supportFragmentManager.inTransaction {
-            if (alarm != -1L) {
-                currentFragment = CountDownFragment.newInstance()
-            } else {
-                currentFragment = MainFragment.newInstance()
+            supportFragmentManager.inTransaction {
+                if (alarm != -1L) {
+                    currentFragment = CountDownFragment.newInstance()
+                } else {
+                    currentFragment = MainFragment.newInstance()
+                }
+                add(R.id.container, currentFragment)
             }
-            add(R.id.container, currentFragment)
-        }
 
         // Setup the bottom button depending on whether there is an alarm scheduled
         prepareButton(alarm != -1L)
@@ -62,12 +67,16 @@ class MainActivity : AppCompatActivity() {
      * Cancel the scheduled alarm and update UI
      */
     fun cancelAlarm() {
+        // Cancel the alarm
         cancelAlarm(this, notificationIntent)
+
+        // CountdownFragment with Mainfragment
         if (currentFragment is CountDownFragment) {
             (currentFragment as CountDownFragment).stopCountDown()
             replace(MainFragment.newInstance())
         }
-        prefs(this).saveNextAlarmTriggerTime(-1L)
+
+        // Let Button start the schedule when clicked on
         prepareButton(false)
     }
 
@@ -78,14 +87,21 @@ class MainActivity : AppCompatActivity() {
         val duration = 10000L // mainFragment.getDuration()
         val between = 60000L  // mainFragment.getBetween()
 
+        // Add extras
         notificationIntent.putExtra(Constants.DURATION, duration)
         notificationIntent.putExtra(Constants.BETWEEN, between)
 
+        // Calculate repeating times
         val triggerAt = System.currentTimeMillis() + between
         val delay = duration + between
 
+        // Schedule Alarm
         scheduleNotification(this, notificationIntent, triggerAt, delay)
+
+        // Replace MainFragment with CountDownFragment
         replace(CountDownFragment.newInstance())
+
+        // Let the Button cancel the schedule when clicked on
         prepareButton(true)
     }
 
