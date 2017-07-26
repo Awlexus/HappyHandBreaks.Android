@@ -1,4 +1,4 @@
-package it.awlex.happyhands
+package it.awlex.happyhandbreaks
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

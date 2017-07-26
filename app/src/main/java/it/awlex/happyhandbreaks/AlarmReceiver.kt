@@ -1,4 +1,4 @@
-package it.awlex.happyhands
+package it.awlex.happyhandbreaks
 
 import android.app.NotificationManager
 import android.app.PendingIntent

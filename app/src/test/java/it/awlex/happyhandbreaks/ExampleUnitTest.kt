@@ -1,4 +1,4 @@
-package it.awlex.happyhands
+package it.awlex.happyhandbreaks
 
 import org.junit.Test
 

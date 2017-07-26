@@ -1,4 +1,4 @@
-package it.awlex.happyhands
+package it.awlex.happyhandbreaks
 
 /**
  * Created by Awlex on 26.07.2017.

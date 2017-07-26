@@ -1,4 +1,4 @@
-package it.awlex.happyhands
+package it.awlex.happyhandbreaks
 
 import android.annotation.SuppressLint
 import android.content.Intent

@@ -1,4 +1,4 @@
-package it.awlex.happyhands
+package it.awlex.happyhandbreaks
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

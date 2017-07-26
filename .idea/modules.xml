@@ -3,8 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HappyHandBreaks.Android.iml" filepath="$PROJECT_DIR$/HappyHandBreaks.Android.iml" />
+      <module fileurl="file://C:\Users\Alex Wieser\Documents\GitHub\HappyHandBreaks\HappyHandBreaks.Android\HappyHandBreaks.Android.iml" filepath="C:\Users\Alex Wieser\Documents\GitHub\HappyHandBreaks\HappyHandBreaks.Android\HappyHandBreaks.Android.iml" />
       <module fileurl="file://C:\Users\Alex Wieser\Documents\GitHub\HappyHandBreaks.Android\HappyHands.iml" filepath="C:\Users\Alex Wieser\Documents\GitHub\HappyHandBreaks.Android\HappyHands.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\Alex Wieser\Documents\GitHub\HappyHandBreaks\HappyHandBreaks.Android\app\app.iml" filepath="C:\Users\Alex Wieser\Documents\GitHub\HappyHandBreaks\HappyHandBreaks.Android\app\app.iml" />
     </modules>
   </component>
 </project>
