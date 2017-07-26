@@ -14,6 +14,10 @@ class MainFragment : Fragment() {
     private lateinit var v: View
 
     companion object {
+        /**
+         * Following the Android guide for making Fragments.
+         * Mistakes were made
+         */
         fun newInstance(): MainFragment = MainFragment()
     }
 
@@ -34,11 +38,14 @@ class MainFragment : Fragment() {
         return v
     }
 
-
-    fun NumberPicker.currentDisplayValueInMillis() = (displayedValues[value].toInt() * 60000).toLong()
+    /**
+     * Return the currently selected value of the [NumberPicker],
+     * cast it into an Long and multiply it by 60000
+     */
+    private fun NumberPicker.currentDisplayValueInMillis() = displayedValues[value].toLong() * 60000
 
     /**
-     * returns the preferred duration for a break in ms
+     * * returns the preferred duration for a break in ms
      */
     fun getDuration(): Long = v.numberPicker.currentDisplayValueInMillis()
 

@@ -1,9 +1,7 @@
 package it.awlex.happyhandbreaks
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
@@ -17,7 +15,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var currentFragment: Fragment
     private lateinit var notificationIntent: Intent
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -29,10 +26,12 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         val alarm = prefs(this).loadNextAlarmTriggerTime()
         if (alarm == -1L)
-            Log.d("Alarm", "No alarm scheduled")
+            Log.d(Constants.ALARM_LOG, "No alarm scheduled")
         else
-            Log.d("Alarm", "next Alarm in ${alarm - System.currentTimeMillis()}ms")
+            Log.d(Constants.ALARM_LOG, "next Alarm in ${alarm - System.currentTimeMillis()}ms")
 
+        // Add either the MainFragment or the CountDownFragment depending on
+        // whether there is an alarm scheduled
         supportFragmentManager.inTransaction {
             if (alarm != -1L) {
                 currentFragment = CountDownFragment.newInstance()
@@ -42,9 +41,11 @@ class MainActivity : AppCompatActivity() {
             add(R.id.container, currentFragment)
         }
 
+        // Setup the bottom button depending on whether there is an alarm scheduled
         prepareButton(alarm != -1L)
     }
 
+    @Suppress("DEPRECATION")
     private fun prepareButton(IsAlarmRunning: Boolean) {
         if (IsAlarmRunning) {
             session_button.text = getString(R.string.cancel_alarm)
@@ -53,12 +54,15 @@ class MainActivity : AppCompatActivity() {
         } else {
             session_button.text = getString(R.string.start_alarm)
             session_button.setBackgroundColor(resources.getColor(android.R.color.holo_green_light))
-            session_button.setOnClickListener { startSession() }
+            session_button.setOnClickListener { startAlarm() }
         }
     }
 
+    /**
+     * Cancel the scheduled alarm and update UI
+     */
     fun cancelAlarm() {
-        cancleAlarm(this, notificationIntent)
+        cancelAlarm(this, notificationIntent)
         if (currentFragment is CountDownFragment) {
             (currentFragment as CountDownFragment).stopCountDown()
             replace(MainFragment.newInstance())
@@ -67,14 +71,13 @@ class MainActivity : AppCompatActivity() {
         prepareButton(false)
     }
 
-    private fun startSession() {
-        Log.d("Alarm", "Prepare Repeating")
-        // Cool oneliner nobody understands in kotlin
-        // If currentFragment is an instance of Mainfragment allocate it, else exit this function
+    private fun startAlarm() {
+        Log.d(Constants.ALARM_LOG, "Prepare Alarm")
 
         // TODO: Replace with real values
         val duration = 10000L // mainFragment.getDuration()
         val between = 60000L  // mainFragment.getBetween()
+
         notificationIntent.putExtra(Constants.DURATION, duration)
         notificationIntent.putExtra(Constants.BETWEEN, between)
 
@@ -92,10 +95,14 @@ class MainActivity : AppCompatActivity() {
         transaction.commit()
     }
 
+    /**
+     * Replace [currentFragment] with [newFragment]
+     *
+     * @param newFragment the fragment the will replace [currentFragment]
+     */
+    @Suppress("NOTHING_TO_INLINE")
     private inline fun replace(newFragment: Fragment) {
         currentFragment = newFragment
         supportFragmentManager.inTransaction { replace(R.id.container, newFragment) }
     }
-
-
 }

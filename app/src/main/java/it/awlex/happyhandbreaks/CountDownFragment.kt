@@ -10,7 +10,8 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_countdown.view.*
 
 /**
- * Created by Awlex on 26.07.2017.
+ * Created by Awlex on 26.07.2017. <br>
+ * Fragment Counting down to the time the Notification will be triggered
  */
 class CountDownFragment : Fragment() {
 
@@ -18,22 +19,22 @@ class CountDownFragment : Fragment() {
     private var triggerAt: Long = -1
     private lateinit var thread: Thread
 
-    companion object {
-        fun newInstance() = CountDownFragment()
-    }
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         v = inflater!!.inflate(R.layout.fragment_countdown, container, false)
         return v
     }
 
+    /**
+     * Returns a new Thread used to update the countdown
+     */
+    @SuppressLint("SetTextI18n")
     private fun updaterThread(): Thread {
         return object : Thread() {
-            @SuppressLint("SetTextI18n")
             override fun run() {
                 try {
                     while (!isInterrupted) {
                         activity.runOnUiThread {
+                            // Time to next Alarm
                             val remaining = triggerAt - System.currentTimeMillis()
 
                             if (remaining > 0) {
@@ -44,11 +45,13 @@ class CountDownFragment : Fragment() {
                                 startActivity(Intent(context, ExerciseActivity::class.java))
                             }
                         }
+                        // Don't flood the apps with updates
                         sleep(50)
                     }
 
                 } catch (e: InterruptedException) {
                 } catch (e: NullPointerException) {
+                    // `activity` can sometimes be null
                 }
 
             }
@@ -56,8 +59,8 @@ class CountDownFragment : Fragment() {
     }
 
     override fun onStop() {
-        stopCountDown()
         super.onStop()
+        stopCountDown()
     }
 
     override fun onResume() {
@@ -66,6 +69,10 @@ class CountDownFragment : Fragment() {
         triggerAt = prefs(context).loadNextAlarmTriggerTime()
         thread = updaterThread()
         thread.start()
+    }
+
+    companion object {
+        fun newInstance() = CountDownFragment()
     }
 
     fun stopCountDown() = thread.interrupt()
