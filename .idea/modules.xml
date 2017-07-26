@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/HappyHandBreaks.Android.iml" filepath="$PROJECT_DIR$/HappyHandBreaks.Android.iml" />
+      <module fileurl="file://C:\Users\Alex Wieser\Documents\GitHub\HappyHandBreaks.Android\HappyHands.iml" filepath="C:\Users\Alex Wieser\Documents\GitHub\HappyHandBreaks.Android\HappyHands.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Happy Handbreaks</string>
+    <string name="start_alarm">Start Alarm</string>
+    <string name="break_duration">minutes long breaks</string>
+    <string name="between_breaks">minutes between breaks</string>
+
+    <string name="cancel_alarm">Cancel Alarm</string>
+    <string name="next_break">Next break is scheduled in</string>
+    <string name="notification_title">Please take a break!</string>
+    <string name="notification_text">Meanwhile try out our hand exercises!</string>
+</resources>
