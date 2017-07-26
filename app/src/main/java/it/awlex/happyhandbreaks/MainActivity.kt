@@ -33,17 +33,19 @@ class MainActivity : AppCompatActivity() {
         // When returning from another Activity, currentfragment won't be null,
         // meaning if currentfragment is not null adding a Fragment would stack it on top
         // of currentfragment and the fragments underneath would be unaddressable (Memory Leak?)
-        if (currentFragment == null)
 
         // Add either the MainFragment or the CountDownFragment depending on
         // whether there is an alarm scheduled
             supportFragmentManager.inTransaction {
+                val isNull = currentFragment == null
                 if (alarm != -1L) {
                     currentFragment = CountDownFragment.newInstance()
                 } else {
                     currentFragment = MainFragment.newInstance()
                 }
-                add(R.id.container, currentFragment)
+                if (isNull)
+                    add(R.id.container, currentFragment)
+                else replace(R.id.container, currentFragment)
             }
 
         // Setup the bottom button depending on whether there is an alarm scheduled
@@ -76,6 +78,9 @@ class MainActivity : AppCompatActivity() {
             replace(MainFragment.newInstance())
         }
 
+        // Save -1 to indicate that the schedule is canceled
+        prefs(this).saveNextAlarmTriggerTime(-1L)
+
         // Let Button start the schedule when clicked on
         prepareButton(false)
     }
@@ -94,6 +99,9 @@ class MainActivity : AppCompatActivity() {
         // Calculate repeating times
         val triggerAt = System.currentTimeMillis() + between
         val delay = duration + between
+
+        //Save new trigger time to indicate that the has been started
+        prefs(this).saveNextAlarmTriggerTime(triggerAt)
 
         // Schedule Alarm
         scheduleNotification(this, notificationIntent, triggerAt, delay)

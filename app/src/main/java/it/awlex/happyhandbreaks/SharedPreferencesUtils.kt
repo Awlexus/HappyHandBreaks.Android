@@ -38,8 +38,15 @@ fun SharedPreferences.saveNextAlarmTriggerTime(time: Long) {
 fun SharedPreferences.loadNextAlarmTriggerTime(): Long {
     if (nextTriggerTime == -1L)
         nextTriggerTime = getLong(Constants.NEXT_ALARM, -1L)
+    if (nextTriggerTime < System.currentTimeMillis()) {
+        Log.e(Constants.ALARM_LOG, "Saved value was before the current time")
+        saveNextAlarmTriggerTime(-1)
+    }
 
-    Log.d(Constants.ALARM_LOG, "Alarm loaded. Next Alarm at $nextTriggerTime")
+    if (nextTriggerTime == -1L)
+        Log.d(Constants.ALARM_LOG, "No Alarm planned")
+    else
+        Log.d(Constants.ALARM_LOG, "Alarm loaded. Next Alarm at $nextTriggerTime")
 
     return nextTriggerTime
 }

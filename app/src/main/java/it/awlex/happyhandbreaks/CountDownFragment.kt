@@ -34,9 +34,11 @@ class CountDownFragment : Fragment() {
                 try {
                     while (!isInterrupted) {
                         activity.runOnUiThread {
+
                             // Time to next Alarm
                             val remaining = triggerAt - System.currentTimeMillis()
 
+                            // Update the UI if countdown is not finished or launch the ExerciseActivity
                             if (remaining > 0) {
                                 v.next_break.text = "${remaining / 60000}:${remaining / 1000 % 60}:${remaining % 1000}"
                             } else {
@@ -45,6 +47,7 @@ class CountDownFragment : Fragment() {
                                 startActivity(Intent(context, ExerciseActivity::class.java))
                             }
                         }
+
                         // Don't flood the apps with updates
                         sleep(50)
                     }
@@ -75,5 +78,8 @@ class CountDownFragment : Fragment() {
         fun newInstance() = CountDownFragment()
     }
 
-    fun stopCountDown() = thread.interrupt()
+    fun stopCountDown() {
+        if (!thread.isInterrupted)
+            thread.interrupt()
+    }
 }

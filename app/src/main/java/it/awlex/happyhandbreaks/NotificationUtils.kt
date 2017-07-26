@@ -35,9 +35,6 @@ fun scheduleNotification(context: Context, intent: Intent, startAt: Long, delay:
     // Start the repeated cycle of Notifications
     alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, startAt, delay, pendingIntent)
 
-    // Save the time (ms) when the Notification will be triggered
-    prefs(context).saveNextAlarmTriggerTime(startAt)
-
     Log.d(Constants.ALARM_LOG, "Alarm scheduled. Next Alarm: $startAt")
 }
 
@@ -51,8 +48,6 @@ fun cancelAlarm(context: Context, intent: Intent) {
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     alarmManager.cancel(getPendingIntent(context, intent = intent, flags = PendingIntent.FLAG_UPDATE_CURRENT))
 
-    // Update the trigger time
-    prefs(context).saveNextAlarmTriggerTime(-1L)
 
     Log.d(Constants.ALARM_LOG, "Alarm cancled")
 }
