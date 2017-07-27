@@ -7,7 +7,7 @@
     tools:context="it.awlex.happyhandbreaks.MainActivity">
 
     <NumberPicker
-        android:id="@+id/numberPicker"
+        android:id="@+id/between_numberpicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -26,9 +26,9 @@
         android:layout_marginTop="8dp"
         android:text="@string/break_duration"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        app:layout_constraintBottom_toBottomOf="@+id/numberPicker2"
-        app:layout_constraintStart_toEndOf="@+id/numberPicker2"
-        app:layout_constraintTop_toTopOf="@+id/numberPicker2"
+        app:layout_constraintBottom_toBottomOf="@+id/duration_numberpicker"
+        app:layout_constraintStart_toEndOf="@+id/duration_numberpicker"
+        app:layout_constraintTop_toTopOf="@+id/duration_numberpicker"
         tools:text="minutes long breaks" />
 
     <TextView
@@ -41,18 +41,18 @@
         android:layout_marginTop="8dp"
         android:text="@string/between_breaks"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        app:layout_constraintBottom_toBottomOf="@+id/numberPicker"
-        app:layout_constraintStart_toEndOf="@+id/numberPicker"
-        app:layout_constraintTop_toTopOf="@+id/numberPicker"
+        app:layout_constraintBottom_toBottomOf="@+id/between_numberpicker"
+        app:layout_constraintStart_toEndOf="@+id/between_numberpicker"
+        app:layout_constraintTop_toTopOf="@+id/between_numberpicker"
         tools:text="minutes between breaks" />
 
     <NumberPicker
-        android:id="@+id/numberPicker2"
+        android:id="@+id/duration_numberpicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numberPicker" />
+        app:layout_constraintTop_toBottomOf="@+id/between_numberpicker" />
 </android.support.constraint.ConstraintLayout>
