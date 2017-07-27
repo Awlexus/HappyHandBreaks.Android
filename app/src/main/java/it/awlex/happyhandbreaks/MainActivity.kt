@@ -29,28 +29,34 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
         val alarm = getNextAlarmTriggerTime(this)
+
         if (alarm == -1L)
             Log.d(Constants.ALARM_LOG, "No alarm scheduled")
         else
             Log.d(Constants.ALARM_LOG, "next Alarm in ${alarm - System.currentTimeMillis()}ms")
 
-        // When returning from another Activity, currentfragment won't be null,
-        // meaning if currentfragment is not null adding a Fragment would stack it on top
-        // of currentfragment and the fragments underneath would be unaddressable (Memory Leak?)
-
         // Add either the MainFragment or the CountDownFragment depending on
         // whether there is an alarm scheduled
         supportFragmentManager.inTransaction {
-            val isNull = currentFragment == null
-            if (alarm != -1L) {
-                currentFragment = CountDownFragment.newInstance()
-            } else {
-                currentFragment = MainFragment.newInstance()
-            }
-            if (isNull)
+
+            // Retrieve previous fragment or null is there was none
+            currentFragment = supportFragmentManager.findFragmentById(R.id.container)
+
+            // Add a new Fragment id there previously was none
+            if (currentFragment == null) {
+
+
+                if (alarm != -1L) {
+                    currentFragment = CountDownFragment.newInstance()
+                } else {
+                    currentFragment = MainFragment.newInstance()
+                }
+
                 add(R.id.container, currentFragment)
-            else replace(R.id.container, currentFragment)
+
+            }
         }
 
         // Setup the bottom button depending on whether there is an alarm scheduled
