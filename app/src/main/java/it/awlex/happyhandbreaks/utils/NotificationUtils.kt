@@ -1,13 +1,16 @@
-package it.awlex.happyhandbreaks
+package it.awlex.happyhandbreaks.utils
 
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import it.awlex.happyhandbreaks.AlarmReceiver
+import it.awlex.happyhandbreaks.Constants
 
 /**
- * Created by Awlex on 26.07.2017. A collection of functions for building the notifications
+ * Created by Awlex on 26.07.2017. <br> <br>
+ *     A collection of functions for building the notifications
  */
 
 /**
@@ -43,7 +46,7 @@ fun scheduleNotification(context: Context, intent: Intent, startAt: Long, delay:
  *
  * @param intent the Intent that the schedule fires every interwall
  */
-fun cancelAlarm(context: Context, intent: Intent) {
+fun cancelNotification(context: Context, intent: Intent) {
     // Cancel schedule
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     alarmManager.cancel(getPendingIntent(context, intent = intent, flags = PendingIntent.FLAG_UPDATE_CURRENT))

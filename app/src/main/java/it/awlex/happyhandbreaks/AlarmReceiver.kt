@@ -8,6 +8,8 @@ import android.content.Context
 import android.content.Intent
 import android.support.v4.app.NotificationCompat
 import android.util.Log
+import it.awlex.happyhandbreaks.utils.prefs
+import it.awlex.happyhandbreaks.utils.setNextAlarmTriggerTime
 
 /**
  * Receive a Broadcast to fire the Notification
@@ -25,7 +27,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val between = intent.getLongExtra(Constants.BETWEEN, -1L)
 
         // Calculate and save next trigger time
-        prefs(context).saveNextAlarmTriggerTime(System.currentTimeMillis() + duration + between)
+        setNextAlarmTriggerTime(context, System.currentTimeMillis() + duration + between)
 
         // Create Intent, that fires when the Notification is clicked
         val notificationContent: Intent = Intent(context, ExerciseActivity::class.java)

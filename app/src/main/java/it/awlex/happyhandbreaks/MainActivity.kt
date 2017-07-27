@@ -7,6 +7,9 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import it.awlex.happyhandbreaks.utils.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -17,6 +20,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setTheme(getCurrentTheme(this))
         setContentView(R.layout.activity_main)
 
         notificationIntent = getNotificationIntent(this)
@@ -24,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val alarm = prefs(this).loadNextAlarmTriggerTime()
+        val alarm = getNextAlarmTriggerTime(this)
         if (alarm == -1L)
             Log.d(Constants.ALARM_LOG, "No alarm scheduled")
         else
@@ -36,20 +41,44 @@ class MainActivity : AppCompatActivity() {
 
         // Add either the MainFragment or the CountDownFragment depending on
         // whether there is an alarm scheduled
-            supportFragmentManager.inTransaction {
-                val isNull = currentFragment == null
-                if (alarm != -1L) {
-                    currentFragment = CountDownFragment.newInstance()
-                } else {
-                    currentFragment = MainFragment.newInstance()
-                }
-                if (isNull)
-                    add(R.id.container, currentFragment)
-                else replace(R.id.container, currentFragment)
+        supportFragmentManager.inTransaction {
+            val isNull = currentFragment == null
+            if (alarm != -1L) {
+                currentFragment = CountDownFragment.newInstance()
+            } else {
+                currentFragment = MainFragment.newInstance()
             }
+            if (isNull)
+                add(R.id.container, currentFragment)
+            else replace(R.id.container, currentFragment)
+        }
 
         // Setup the bottom button depending on whether there is an alarm scheduled
         prepareButton(alarm != -1L)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+
+        menu ?: return true
+        menu.findItem(R.id.debug).isChecked = isDebugMode(this)
+        menu.findItem(R.id.set_theme).setTitle(getToggledThemeTitleId(this))
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        item ?: return false
+
+        when (item.itemId) {
+            R.id.debug -> item.isChecked = toggleDebugMode(this)
+            R.id.set_theme -> {
+                toggleCurrentTheme(this)
+                // item.setTitle(getToggledThemeTitleId(this))
+            }
+        }
+
+        return true
     }
 
     @Suppress("DEPRECATION")
@@ -69,8 +98,9 @@ class MainActivity : AppCompatActivity() {
      * Cancel the scheduled alarm and update UI
      */
     fun cancelAlarm() {
+
         // Cancel the alarm
-        cancelAlarm(this, notificationIntent)
+        cancelNotification(this, notificationIntent)
 
         // CountdownFragment with Mainfragment
         if (currentFragment is CountDownFragment) {
@@ -79,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Save -1 to indicate that the schedule is canceled
-        prefs(this).saveNextAlarmTriggerTime(-1L)
+        setNextAlarmTriggerTime(this, -1L)
 
         // Let Button start the schedule when clicked on
         prepareButton(false)
@@ -101,7 +131,7 @@ class MainActivity : AppCompatActivity() {
         val delay = duration + between
 
         //Save new trigger time to indicate that the has been started
-        prefs(this).saveNextAlarmTriggerTime(triggerAt)
+        setNextAlarmTriggerTime(this, triggerAt)
 
         // Schedule Alarm
         scheduleNotification(this, notificationIntent, triggerAt, delay)

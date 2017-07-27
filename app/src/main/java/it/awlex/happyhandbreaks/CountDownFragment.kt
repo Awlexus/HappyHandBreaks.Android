@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import it.awlex.happyhandbreaks.utils.getNextAlarmTriggerTime
+import it.awlex.happyhandbreaks.utils.prefs
 import kotlinx.android.synthetic.main.fragment_countdown.view.*
 
 /**
@@ -69,7 +71,7 @@ class CountDownFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        triggerAt = prefs(context).loadNextAlarmTriggerTime()
+        triggerAt = getNextAlarmTriggerTime(context)
         thread = updaterThread()
         thread.start()
     }

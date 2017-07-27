@@ -11,5 +11,6 @@ class Constants {
         val NEXT_ALARM = "nextAlarm"
         val ALARM_LOG = "Alarm"
         val APP_THEME = "app_theme"
+        val DEBUG = "debug"
     }
 }

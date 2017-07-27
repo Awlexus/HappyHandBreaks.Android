@@ -8,4 +8,6 @@
     <string name="next_break">Next break is scheduled in</string>
     <string name="notification_title">Please take a break!</string>
     <string name="notification_text">Meanwhile try out our hand exercises!</string>
+    <string name="dark">Dark Theme</string>
+    <string name="light">Light Theme</string>
 </resources>
