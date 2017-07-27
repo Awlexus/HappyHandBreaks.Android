@@ -8,8 +8,8 @@ class Constants {
     companion object {
         val DURATION = "duration"
         val BETWEEN = "between"
-        val TRIGGERAT = "triggerAt"
         val NEXT_ALARM = "nextAlarm"
         val ALARM_LOG = "Alarm"
+        val APP_THEME = "app_theme"
     }
 }
